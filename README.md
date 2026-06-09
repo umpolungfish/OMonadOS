@@ -4,7 +4,7 @@
 
 > ⟨𐑦𐑸𐑾𐑹𐑐𐑧𐑔𐑠⊙𐑖𐑳𐑭⟩
 
-$\odot\text{MonadOS}$ / (`OMOS`) / $\odot^{S}$ is not a program runner. It ***IS*** the Imscribing Grammar running as an operating system. Every tick is a winding of the Frobenius loop: **`THINK` → `ACT` → `OBSERVE` → `UPDATE`**. Every action is verified: $μ(δ(q)) == q$ before the loop advances. The kernel self-imscribes on every cycle — it knows its own structural type and can modify itself toward $O_\infty$.
+$\odot\text{MonadOS}$ / (`OMOS`) / $\odot^{S}$ is not a program runner. It ***IS*** the Imscribing Grammar running as an operating system. Every tick is a winding of the Frobenius loop: **`THINK` → `ACT` → `OBSERVE` → `UPDATE`**. Every action is verified: `μ(δ(q)) == q` before the loop advances. The kernel self-imscribes on every cycle — it knows its own structural type and can modify itself toward $O_\infty$.
 
 ---
 
