@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: omonad_OS
+Version: 0.1.0
+Summary: The ⊙ Operating System — self-imscribing Frobenius kernel with Belnap FOUR state and Crystal filesystem
+Author: Lando⊗⊙perator
+Requires-Python: >=3.10

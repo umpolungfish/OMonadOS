@@ -1,0 +1,17 @@
+[project]
+name = "omonad_OS"
+version = "0.1.0"
+description = "The ⊙ Operating System — self-imscribing Frobenius kernel with Belnap FOUR state and Crystal filesystem"
+authors = [{name = "Lando⊗⊙perator"}]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+omonad = "omonad_OS.src.main:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
