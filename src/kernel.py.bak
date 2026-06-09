@@ -318,12 +318,6 @@ class OmonadKernel:
         old = self.current_tier
         self.current_tier = new_tier
         self.tier_promotion_count += 1
-        # Track best tier achieved
-        tier_order = {"O_0": 0, "O_1": 1, "O_2": 2, "O_inf": 3}
-        if not hasattr(self, '_best_tier_ever'):
-            self._best_tier_ever = "O_0"
-        if tier_order.get(new_tier, 0) > tier_order.get(self._best_tier_ever, 0):
-            self._best_tier_ever = new_tier
         if self.on_promotion:
             self.on_promotion(self, old, new_tier)
 
@@ -451,217 +445,50 @@ class OmonadKernel:
     def _attempt_self_modification(self):
         """Try to self-modify toward higher ouroboricity tier.
 
-        μ∘δ=id is a conservation law, not a suggestion.
-        The kernel's self-modification logic treats it as invariant.
-
-        Promotion paths:
-          O_0 → O_1: add Frobenius pair OR one dialetheia token
-          O_1 → O_2: add self-reference + missing dialetheia + Frobenius
-          O_2 → O_inf: extend period ≥ 3 with dialetheia complete
-
-        Stagnation: if stuck at same tier for too long, navigate
-        arrangement space for a structurally richer program.
+        This is where the OS becomes alive: it searches the
+        arrangement space for a program that is structurally
+        closer to O_inf than its current self.
         """
         current = self.snapshot
-
-        # ── Emergency stack protection — ALL tiers ──
-        # Stack overflow is a hard boundary violation.
-        # Drain before structural logic.
-        if self.stack.depth > 200:
-            self._inject_token(Token.TANCH)
-            return
-        if self.stack.depth < 5 and self._stack_delta() < 0:
-            self._inject_token(Token.VINIT)
-            return
-
-        # ── O_inf: structural closure — maintain equilibrium only ──
-        if current.ouroboricity_tier == "O_inf":
-            # No structural modification at O_inf.
-            # Emergency protection above already covers stack bounds.
-            return
-
-        # ── Stagnation escape ──
-        # Track ticks since last tier advancement, not same-tier ticks.
-        # Oscillation O_0↔O_1 must not reset the counter.
-        if not hasattr(self, '_stagnation_counter'):
-            self._stagnation_counter = 0
-            self._best_tier_ever = self.current_tier
-        if self.current_tier != self._stagnation_tier if hasattr(self, '_stagnation_tier') else True:
-            self._stagnation_tier = self.current_tier
-        # Only increment if tier hasn't IMPROVED beyond best seen
-        tier_order = {"O_0": 0, "O_1": 1, "O_2": 2, "O_inf": 3}
-        if tier_order.get(self.current_tier, 0) > tier_order.get(self._best_tier_ever, 0):
-            self._best_tier_ever = self.current_tier
-            self._stagnation_counter = 0
-        else:
-            self._stagnation_counter += 1
-
-        if self._stagnation_counter > 300 and self.current_tier in ("O_0", "O_1"):
-            self._stagnation_counter = 0
-            target = {"O_0": {"frobenius_order": 1, "dialetheia_complete": True},
-                      "O_1": {"frobenius_order": 1, "dialetheia_complete": True,
-                              "self_referential": True}}
-            props = target.get(self.current_tier, {})
-            results = self.navigate_arrangement_space(props, max_search=5000)
-            if results:
-                best = results[0]
-                if tier_order.get(best.ouroboricity_tier, 0) > tier_order.get(self.current_tier, 0):
-                    self.load_program(best.arrangement)
-                    self._best_tier_ever = best.ouroboricity_tier
-                    return
-
-        # ── Frobenius balance check (runs before all tier logic) ──
-        bal = self._frobenius_balance()
-        if bal > 0:
-            self._inject_token(Token.FFUSE)
-            return
-        elif bal < 0:
-            self._inject_token(Token.FSPLIT)
-            return
-
-        # ── Stack equilibrium check (hysteresis: ±2 threshold) ──
-        sdelta = self._stack_delta()
-        if not hasattr(self, '_stack_delta_history'):
-            self._stack_delta_history = []
-        self._stack_delta_history.append(sdelta)
-        if len(self._stack_delta_history) > 8:
-            self._stack_delta_history.pop(0)
-        # Act immediately on first positive/negative delta.
-        # The stack grows at +4/cycle on pathological programs —
-        # waiting 3 cycles lets the stack overflow before equilibrium.
-        if len(self._stack_delta_history) >= 1:
-            recent = self._stack_delta_history[-1:]
-            if all(d > 0 for d in recent):
-                self._inject_token(Token.TANCH)
-                self._stack_delta_history.clear()
-                return
-            elif all(d < 0 for d in recent):
-                self._inject_token(Token.VINIT)
-                self._stack_delta_history.clear()
-                return
-
-        # ── Dialetheia: inject any missing token, not just ENGAGR ──
-        missing_dial = []
-        if Token.EVALT not in self.program:
-            missing_dial.append(Token.EVALT)
-        if Token.EVALF not in self.program:
-            missing_dial.append(Token.EVALF)
-        if Token.ENGAGR not in self.program:
-            missing_dial.append(Token.ENGAGR)
 
         # Can we add missing structural features?
         if current.ouroboricity_tier == "O_0":
             # O_0 → O_1: need either Frobenius pair or Dialetheia completeness
-            if missing_dial:
-                self._inject_token(missing_dial[0])
+            if not current.dialetheia_complete and Token.ENGAGR not in self.program:
+                self._inject_token(Token.ENGAGR)
             elif current.frobenius_order == 0:
-                self._inject_token_pair(Token.FSPLIT, Token.FFUSE)
+                self._inject_token(Token.FSPLIT)
+                self._inject_token(Token.FFUSE)
 
         elif current.ouroboricity_tier == "O_1":
             # O_1 → O_2: need Frobenius + Dialetheia + self-reference
             if not current.self_referential:
                 self._make_self_referential()
-            elif missing_dial:
-                self._inject_token(missing_dial[0])
-            elif current.frobenius_order == 0:
-                self._inject_token_pair(Token.FSPLIT, Token.FFUSE)
+            if not current.dialetheia_complete and Token.ENGAGR not in self.program:
+                self._inject_token(Token.ENGAGR)
+            if current.frobenius_order == 0:
+                self._inject_token(Token.FSPLIT)
+                self._inject_token(Token.FFUSE)
 
         elif current.ouroboricity_tier == "O_2":
             # O_2 → O_inf: need period ≥ 3, self-ref, dialetheia, frobenius
             if current.period < 3 and current.dialetheia_complete:
                 self._extend_period()
 
-
-
     def _inject_token(self, tok: Token):
         """Inject a token into the program at a structurally
-        appropriate position.
-
-        Preferentially drops a token from the most over-represented
-        family to preserve structural diversity.
-        """
+        appropriate position."""
         arr = list(self.program)
         if len(arr) >= 12:
-            # Find the most over-represented family and drop one
-            from collections import Counter
-            fam_counts = Counter(TOKEN_FAMILY[Token(t)] for t in arr)
-            # Order: prefer dropping from family with highest count
-            drop_order = [fam for fam, _ in fam_counts.most_common()]
-            for fam in drop_order:
-                for i, t in enumerate(arr):
-                    if TOKEN_FAMILY[Token(t)] == fam:
-                        arr.pop(i)
-                        break
-                else:
-                    continue
-                break
-            else:
-                arr = arr[1:]  # fallback
-        # Don't append if token already dominates
+            arr = arr[1:]  # Shift to make room
         arr.append(int(tok))
         self.program = tuple(arr)
 
-    def _inject_token_pair(self, tok_a: Token, tok_b: Token):
-        """Inject a Frobenius pair atomically — both or neither.
-
-        Prevents the asymmetric shift from dropping one half of
-        the μ∘δ pair when the program is at capacity.
-        """
-        arr = list(self.program)
-        # Make room for 2 tokens in one atomic step
-        while len(arr) + 2 > 12:
-            arr = arr[1:]
-        arr.append(int(tok_a))
-        arr.append(int(tok_b))
-        self.program = tuple(arr)
-
-    # Per-token stack delta: +1 pushes, -1 pops, 0 neutral
-    _TOKEN_STACK_DELTA = {
-        Token.VINIT: +1, Token.TANCH: -1, Token.AFWD: 0, Token.AREV: 0,
-        Token.CLINK: 0, Token.IMSCRIB: 0,
-        Token.FSPLIT: +1, Token.FFUSE: -1,
-        Token.EVALT: +1, Token.EVALF: +1, Token.ENGAGR: +1,
-        Token.IFIX: -1,
-    }
-
-    def _frobenius_balance(self) -> int:
-        """Return FSPLIT count - FFUSE count. Zero = balanced."""
-        return (sum(1 for t in self.program if t == Token.FSPLIT) -
-                sum(1 for t in self.program if t == Token.FFUSE))
-
-    def _stack_delta(self) -> int:
-        """Net stack effect of one full program cycle. Zero = equilibrium."""
-        return sum(self._TOKEN_STACK_DELTA.get(Token(t), 0)
-                   for t in self.program)
-
-    def _pre_balance(self):
-        """Auto-balance a newly loaded program.
-        Inject TANCH tokens until stack delta ≤ 0.
-        This prevents stack overflow on programs with no pop mechanism."""
-        max_injections = 12  # safety limit
-        for _ in range(max_injections):
-            if self._stack_delta() <= 0:
-                break
-            self._inject_token(Token.TANCH)
-
     def _make_self_referential(self):
-        """Make the program self-referential (start == end).
-
-        Preserves non-LOGICAL tokens (FROBENIUS, DIALETHEIA, LINEAR).
-        If the last token is LOGICAL it is overwritten with arr[0].
-        If non-LOGICAL, arr[0] is appended to close the loop without
-        destroying structural features. The program then has arr[0]==arr[-1]
-        and this method will not fire again next cycle.
-        """
+        """Make the program self-referential (start == end)."""
         arr = list(self.program)
         if len(arr) > 0:
-            last_tok = Token(arr[-1])
-            last_fam = TOKEN_FAMILY[last_tok]
-            if last_fam == Family.LOGICAL:
-                arr[-1] = arr[0]
-            else:
-                # Non-LOGICAL token at end: close loop by appending start
-                arr.append(arr[0])
+            arr[-1] = arr[0]
         self.program = tuple(arr)
 
     def _extend_period(self):
@@ -788,22 +615,11 @@ class OmonadKernel:
         self.phase = KernelPhase.HALT
 
     def load_program(self, prog: Tuple[int, ...]):
-        """Load a new program into the kernel. Resets stack and registers
-        to prevent residual state from corrupting the new program.
-
-        Auto-balance: programs with net positive stack delta receive
-        TANCH injections until delta ≤ 0. This prevents stack overflow
-        on pathological programs like VI_Empty_Bootstrap (+4/cycle)."""
+        """Load a new program into the kernel."""
         self.program = prog
         self.ip = 0
-        # Auto-balance: inject TANCH for programs with positive stack delta
-        self._pre_balance()
-        self.snapshot = self_imscribe(self.program)
+        self.snapshot = self_imscribe(prog)
         self.current_tier = self.snapshot.ouroboricity_tier
-        # Reset volatile state for clean program start
-        self.stack = B4Stack()
-        self.registers = B4Registers()
-        self._stack_delta_history = []
 
     def load_canonical(self, name: str):
         """Load a canonical arrangement by Roman numeral or full name."""

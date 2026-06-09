@@ -16,6 +16,7 @@ Or:  cd /home/mrnob0dy666/omonad_OS && python3 src/main.py
 Author: Lando⊗⊙perator
 """
 
+from typing import Tuple
 import sys
 import os
 import time
