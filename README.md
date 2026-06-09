@@ -43,19 +43,34 @@ Six organoid augmentations are memory-mapped as I/O devices with B4 register blo
 
 ## Architecture
 
+omonad_OS sits under the **imasmic_core** umbrella — the shared 12-token IMASM
+instruction set and Frobenius verifier used by ALL Imscribing Grammar ecosystem
+projects (cetaceanspeak, exOS, IMSCRIBr, ob3ect, priests-engine, odot_operator,
+p4rakernel, red-hot_rebis, synfin, and organoid augmentations).
+
 ```
-$\odot^{S}$/
-├── src/
-│   ├── tokens.py          — 12 IMASM opcodes, bootstrap loop, canonicals
-│   ├── belnap_state.py    — Belnap FOUR memory, registers, stack
-│   ├── kernel.py          — Self-imscribing Frobenius kernel loop
-│   ├── crystal_fs.py      — 17.28M-type crystal filesystem
-│   ├── clink_chain.py     — 9-layer structural descent/ascent
-│   ├── organoid_hal.py    — Organoid augmentation controller
-│   ├── main.py            — Boot sequence + interactive REPL
-│   └── __init__.py
-├── pyproject.toml
-└── README.md
+Imscribing Grammar Ecosystem/
+│
+├── imasmic_core/               ← Shared umbrella (Token, FrobeniusVerify, CLINK bridge)
+│
+├── $\odot^{S}$/  (omonad_OS)
+│   ├── src/
+│   │   ├── tokens.py          — Re-exports from imasmic_core + 12 canonicals
+│   │   ├── belnap_state.py    — Belnap FOUR memory, registers, stack
+│   │   ├── kernel.py          — Self-imscribing Frobenius kernel loop
+│   │   ├── crystal_fs.py      — 17.28M-type crystal filesystem
+│   │   ├── clink_chain.py     — 9-layer structural descent/ascent
+│   │   ├── organoid_hal.py    — Organoid augmentation controller
+│   │   ├── main.py            — Boot sequence + interactive REPL
+│   │   └── __init__.py
+│   ├── pyproject.toml         — Depends on imasmic_core >= 0.5.69
+│   └── README.md
+│
+├── exOS/                       ← Bare-metal IMASM VM
+├── priests-engine/             ← ParaASM Belnap FOUR VM
+├── p4rakernel/                 ← Lean 4 formalization
+├── ob3ect/                     ← Self-imscribing compiler tower
+└── ... (9+ projects)
 ```
 
 ---

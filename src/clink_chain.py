@@ -74,7 +74,7 @@ CLINK_CHAIN: List[ClinkLayer] = [
         '⊙', '𐑓', '𐑳', '𐑭',
         "Bonded atoms — ⊙ gate opens, integer winding, sequential composition",
         [Token.VINIT, Token.TANCH, Token.AFWD, Token.AREV, Token.CLINK,
-         Token.IMSCRIB, Token.FSPLIT, Token.FFUSE, Token.EVALT, Token.EVALF,
+         Token.ISCRIB, Token.FSPLIT, Token.FFUSE, Token.EVALT, Token.EVALF,
          Token.IFIX],
     ),
     ClinkLayer(4, "Cell (Living)", "O_2",

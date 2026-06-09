@@ -1,2 +1,2 @@
 [console_scripts]
-omonad = omonad_OS.src.main:main
+omos = omonad_OS.src.main:main

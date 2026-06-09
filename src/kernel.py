@@ -34,6 +34,11 @@ from src.belnap_state import (
     b4_meet, b4_join, b4_complement
 )
 
+# ─── Shared Frobenius verification from imasmic_core ─────────
+from imasmic_core.frobenius_verify import (
+    FrobeniusResult, FrobeniusHarness, B4 as _B4_shared,
+)
+
 
 # ─── Kernel Phases ───────────────────────────────────────────
 
@@ -47,18 +52,8 @@ class KernelPhase(Enum):
 
 
 # ─── Frobenius Verification ──────────────────────────────────
-
-@dataclass
-class FrobeniusResult:
-    """μ∘δ=id verification result."""
-    closed: bool
-    delta_input: any
-    delta_output: any
-    mu_result: any
-    mismatch: Optional[str] = None
-
-    def __bool__(self) -> bool:
-        return self.closed
+# FrobeniusResult is imported from imasmic_core.frobenius_verify
+# (the shared umbrella for all IG ecosystem projects).
 
 
 def verify_frobenius(
@@ -223,6 +218,7 @@ class OmonadKernel:
         # Discovery
         self.discovered_programs: Dict[str, Tuple[int, ...]] = {}
         self.arrangement_space_samples: List[StructuralSnapshot] = []
+        self.harness = FrobeniusHarness("omonad_OS")
 
         # Hooks
         self.on_tick: Optional[Callable] = None
@@ -372,7 +368,7 @@ class OmonadKernel:
             b = self.registers.read(2)
             self.registers.write(3, b4_meet(a, b))
 
-        elif tok == Token.IMSCRIB:
+        elif tok == Token.ISCRIB:
             # Self-imscribe: read current snapshot into R4-R7
             snap = self.snapshot or self_imscribe(self.program)
             self.registers.write(4, B4(snap.token_diversity & 0b11))
@@ -618,7 +614,7 @@ class OmonadKernel:
     # Per-token stack delta: +1 pushes, -1 pops, 0 neutral
     _TOKEN_STACK_DELTA = {
         Token.VINIT: +1, Token.TANCH: -1, Token.AFWD: 0, Token.AREV: 0,
-        Token.CLINK: 0, Token.IMSCRIB: 0,
+        Token.CLINK: 0, Token.ISCRIB: 0,
         Token.FSPLIT: +1, Token.FFUSE: -1,
         Token.EVALT: +1, Token.EVALF: +1, Token.ENGAGR: +1,
         Token.IFIX: -1,
@@ -737,7 +733,7 @@ class OmonadKernel:
 
         # Then try signature-directed generation
         logical_tokens = [t.value for t in [Token.VINIT, Token.TANCH,
-            Token.AFWD, Token.AREV, Token.CLINK, Token.IMSCRIB]]
+            Token.AFWD, Token.AREV, Token.CLINK, Token.ISCRIB]]
         frob_tokens = [Token.FSPLIT.value, Token.FFUSE.value]
         dial_tokens = [Token.EVALT.value, Token.EVALF.value, Token.ENGAGR.value]
 
@@ -783,6 +779,14 @@ class OmonadKernel:
             f"╚══════════════════════════════════════════════════╝",
         ])
         return "\n".join(lines)
+
+    def frobenius_summary(self) -> str:
+        """Return the FrobeniusHarness summary for omonad_OS."""
+        # Sync local verification log into harness
+        for r in self.verification_log[-20:]:
+            if not any(rr is r for rr in self.harness.results):
+                self.harness.check(r)
+        return self.harness.summary()
 
     def halt(self):
         self.phase = KernelPhase.HALT
