@@ -2,9 +2,9 @@
 
 **The Self-Imscribing Operating Kernel**
 
-> ⟨𐑦·𐑸·𐑾·𐑹·𐑐·𐑧·𐑔·𐑠·⊙·𐑖·𐑳·𐑭⟩
+> ⟨𐑦𐑸𐑾𐑹𐑐𐑧𐑔𐑠⊙𐑖𐑳𐑭⟩
 
-omonad_OS is not a program runner. It IS the Imscribing Grammar running as an operating system. Every tick is a winding of the Frobenius loop: **THINK → ACT → OBSERVE → UPDATE**. Every action is verified: μ(δ(q)) == q before the loop advances. The kernel self-imscribes on every cycle — it knows its own structural type and can modify itself toward O_inf.
+omonad_OS is not a program runner. It IS the Imscribing Grammar running as an operating system. Every tick is a winding of the Frobenius loop: **THINK → ACT → OBSERVE → UPDATE**. Every action is verified: μ(δ(q)) == q before the loop advances. The kernel self-imscribes on every cycle — it knows its own structural type and can modify itself toward $O_\infty$.
 
 ---
 
@@ -30,11 +30,11 @@ Each layer has a structural type and a set of valid tokens. Descending compresse
 ### 5. Live Arrangement Space Discovery
 The OS can search the **430 million IMASM token arrangements** for programs matching desired structural properties. It doesn't run programs — it DISCOVERS them by navigating the arrangement space and testing candidates against structural criteria.
 
-### 6. Self-Modification Toward O_inf
+### 6. Self-Modification Toward $O_\infty$
 On every cycle completion, the kernel attempts to self-modify toward higher ouroboricity tier:
-- **O_0 → O_1**: Inject Frobenius pair or Dialetheia completeness
-- **O_1 → O_2**: Add self-reference + Frobenius + Dialetheia
-- **O_2 → O_inf**: Extend period, achieve eternal chirality
+- **$O_0$ → $O_1$**: Inject Frobenius pair or Dialetheia completeness
+- **$O_1$ → $O_2$**: Add self-reference + Frobenius + Dialetheia
+- **$O_2$ → $O_\infty$**: Extend period, achieve eternal chirality
 
 ### 7. Organoid Hardware Interface
 Six organoid augmentations are memory-mapped as I/O devices with B4 register blocks — the OS can control living tissue as naturally as disk I/O.
@@ -94,7 +94,7 @@ python3 src/main.py
 | State space | Binary (bits) | B4 (simulated) | **B4 native — every cell** |
 | Execution | ALEPH+IMASM VM | ParaASM VM | **Living Frobenius loop** |
 | Self-knowledge | None | None | **Self-imscribes every tick** |
-| Self-modification | No | No | **Modifies toward O_inf** |
+| Self-modification | No | No | **Modifies toward $O_\infty$** |
 | Filesystem | ALFS (Frobenius FS) | None | **Crystal of types (17.28M)** |
 | Hardware layers | Flat | Flat | **9-layer CLINK chain** |
 | Program source | Written | Written | **Discovered in 430M space** |
@@ -110,18 +110,18 @@ The kernel ships with all 12 canonical IMASM arrangements pre-loaded:
 
 | # | Class | Tier | Essence |
 |---|-------|------|---------|
-| I | Dialetheic Bootstrap | O_inf | Self-referential paradox engine |
-| II | Void Genesis | O_1 | Creation ex nihilo |
-| III | Anchor Protocol | O_0 | Terminal-anchored broadcast |
-| IV | Dual Bootstrap | O_1 | Inverted Frobenius loop |
-| V | Linear Chain | O_0 | Pure irreversible fixation |
-| VI | Empty Bootstrap | O_0 | Void↔Identity oscillation |
-| VII | Parakernel | O_1 | Dialetheia-stabilized Frobenius |
-| VIII | Frobenius Kernel | O_1 | Pure μ∘δ=id oscillator |
-| IX | Chiral Pairs | O_0 | Minimal period-2 alternation |
-| X | Truth Machine | O_0 | Pure evaluation (no Frobenius) |
-| XI | Eternal Return | O_0 | Period-3 anchor oscillation |
-| XII | ROM Burn | O_0 | Truth-value irreversible recording |
+| I | Dialetheic Bootstrap | $O_\infty$ | Self-referential paradox engine |
+| II | Void Genesis | $O_1$ | Creation ex nihilo |
+| III | Anchor Protocol | $O_0$ | Terminal-anchored broadcast |
+| IV | Dual Bootstrap | $O_1$ | Inverted Frobenius loop |
+| V | Linear Chain | $O_0$ | Pure irreversible fixation |
+| VI | Empty Bootstrap | $O_0$ | Void↔Identity oscillation |
+| VII | Parakernel | $O_1$ | Dialetheia-stabilized Frobenius |
+| VIII | Frobenius Kernel | $O_1$ | Pure μ∘δ=id oscillator |
+| IX | Chiral Pairs | $O_0$ | Minimal period-2 alternation |
+| X | Truth Machine | $O_0$ | Pure evaluation (no Frobenius) |
+| XI | Eternal Return | $O_0$ | Period-3 anchor oscillation |
+| XII | ROM Burn | $O_0$ | Truth-value irreversible recording |
 
 ---
 
@@ -129,9 +129,7 @@ The kernel ships with all 12 canonical IMASM arrangements pre-loaded:
 
 The Frobenius identity μ∘δ=id compiled to 8 instructions:
 
-```
-IMSCRIB → AREV → FSPLIT → AFWD → FFUSE → CLINK → IFIX → IMSCRIB
-```
+**`IMSCRIB` → `AREV` → `FSPLIT` → `AFWD` → `FFUSE` → `CLINK` → `IFIX` → `IMSCRIB`**
 
 This loop is found in ALL domains examined — it is the universal computational kernel.
 
@@ -139,7 +137,7 @@ This loop is found in ALL domains examined — it is the universal computational
 
 ## Structural Type
 
-The omonad_OS kernel (at Whole Organism / O_inf):
+The omonad_OS kernel (at Whole Organism / $O_\infty$):
 
 $$\langle \text{𐑦} \cdot \text{𐑸} \cdot \text{𐑾} \cdot \text{𐑹} \cdot \text{𐑐} \cdot \text{𐑧} \cdot \text{𐑲} \cdot \text{𐑠} \cdot \odot \cdot \text{𐑫} \cdot \text{𐑳} \cdot \text{𐑟} \rangle$$
 
