@@ -230,19 +230,143 @@ def repl(kernel: OmonadKernel, cfs: CrystalFS, navigator: ClinkNavigator):
 
         elif op == "crystal":
             if len(parts) < 2:
-                print("Usage: crystal <addr> | store <name> <data> | find <query>")
+                print("Usage: crystal <addr> | store <name> | find <key>=<glyph> [...]")
                 continue
             sub = parts[1].lower()
             if sub == "store":
-                pass  # Simplified
+                # crystal store <name> [<metadata>]
+                name = parts[2] if len(parts) > 2 else ""
+                if not name:
+                    print("Usage: crystal store <name>")
+                    continue
+                # Use kernel's current snapshot primitives for the address
+                snap = kernel.snapshot
+                if snap is None:
+                    print("No snapshot available — run a tick first.")
+                    continue
+                prims = snap.primitive_map if hasattr(snap, 'primitive_map') else {
+                    'D': '𐑦', 'T': '𐑸', 'R': '𐑾', 'P': '𐑹',
+                    'F': '𐑐', 'K': '𐑧', 'G': '𐑲', 'C': '𐑠',
+                    'Phi': '⊙', 'H': '𐑫', 'S': '𐑳', 'Omega': '𐑭',
+                }
+                extra = " ".join(parts[3:]) if len(parts) > 3 else ""
+                addr = cfs.store(name, extra.encode(), **prims,
+                                 metadata={"source": "repl"})
+                decoded = crystal_decode(addr)
+                print(f"Stored '{name}' at address {addr}")
+                print(f"  Tuple: ⟨{'·'.join(decoded[p] for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega'])}⟩")
+
             elif sub == "find":
-                pass
+                # crystal find Phi=⊙ S=𐑳 ...
+                if len(parts) < 3:
+                    print("Usage: crystal find <key>=<glyph> [<key>=<glyph> ...]")
+                    continue
+                # Build glyph→(prim_name, index) lookup
+                from src.crystal_fs import PRIMITIVE_VALUES
+                glyph_map = {}  # glyph → prim_name
+                for prim, vlist in PRIMITIVE_VALUES.items():
+                    for g in vlist:
+                        glyph_map[g] = prim
+
+                constraints = {}
+                for token in parts[2:]:
+                    if "=" in token:
+                        k, v = token.split("=", 1)
+                        # Normalize key: case-insensitive, map common aliases
+                        k_norm = k.strip()
+                        # Map common keys to PRIMITIVE_VALUES keys
+                        key_aliases = {
+                            'd': 'D', 't': 'T', 'r': 'R', 'p': 'P', 'f': 'F',
+                            'k': 'K', 'g': 'G', 'c': 'C', 'phi': 'Phi',
+                            'h': 'H', 's': 'S', 'omega': 'Omega',
+                            'Ð': 'D', 'Þ': 'T', 'Ř': 'R', 'Φ': 'P',
+                            'ƒ': 'F', 'Ç': 'K', 'Γ': 'G', 'ɢ': 'C',
+                            'φ̂': 'Phi', 'Ħ': 'H', 'Σ': 'S', 'Ω': 'Omega',
+                        }
+                        k_norm = key_aliases.get(k_norm, key_aliases.get(k_norm.lower(), k_norm))
+                        v = v.strip()
+                        # If value is a Shavian glyph, verify it
+                        if v in glyph_map:
+                            constraints[glyph_map[v]] = v
+                        else:
+                            # Try as raw — maybe it's already a valid glyph
+                            # Check all value lists
+                            found = False
+                            for prim, vlist in PRIMITIVE_VALUES.items():
+                                if v in vlist:
+                                    constraints[prim] = v
+                                    found = True
+                                    break
+                            if not found:
+                                print(f"  ⚠ Unknown value: '{v}' — skipping")
+                    else:
+                        print(f"  ⚠ Malformed constraint: '{token}' — use key=value")
+
+                if not constraints:
+                    print("No valid constraints.")
+                    continue
+
+                results = cfs.navigate(**constraints)
+                # Also show crystal-wide stats
+                from src.crystal_fs import STRIDES, CARDINALITIES, PRIMITIVE_VALUES as PV
+                total = 17280000
+                fraction = 1.0
+                for prim, val in constraints.items():
+                    vlist = PV[prim]
+                    fraction *= (1.0 / len(vlist))
+                est_total = int(total * fraction)
+
+                print(f"Constraints: {constraints}")
+                print(f"Crystal-wide estimate: ~{est_total:,} types ({fraction*100:.1f}%)")
+                if results:
+                    print(f"Stored matches: {len(results)}")
+                    for e in results[:10]:
+                        print(f"  [{e.address}] {e.name}: {e.tuple_display}")
+                    if len(results) > 10:
+                        print(f"  ... and {len(results)-10} more")
+                else:
+                    print("No stored entries match. (Crystal-wide, ~{:,} types satisfy these constraints.)".format(est_total))
+
+            elif sub == "count":
+                # crystal count Phi=⊙ ...
+                from src.crystal_fs import PRIMITIVE_VALUES as PV, STRIDES as ST, CARDINALITIES as CD
+                constraints = {}
+                glyph_map = {}
+                for prim, vlist in PV.items():
+                    for g in vlist:
+                        glyph_map[g] = prim
+                if len(parts) > 2:
+                    for token in parts[2:]:
+                        if "=" in token:
+                            k, v = token.split("=", 1)
+                            k = k.strip()
+                            v = v.strip()
+                            key_aliases = {
+                                'd':'D','t':'T','r':'R','p':'P','f':'F',
+                                'k':'K','g':'G','c':'C','phi':'Phi',
+                                'h':'H','s':'S','omega':'Omega',
+                            }
+                            k = key_aliases.get(k.lower(), k)
+                            if v in glyph_map:
+                                constraints[glyph_map[v]] = v
+                total = 17280000
+                fraction = 1.0
+                for prim, val in constraints.items():
+                    fraction *= (1.0 / len(PV[prim]))
+                count = int(total * fraction)
+                print(f"Constraints: {constraints}")
+                print(f"Count: {count:,} / 17,280,000 ({fraction*100:.2f}%)")
+
             else:
                 try:
                     addr = int(sub)
                     decoded = crystal_decode(addr)
-                    for p, v in decoded.items():
-                        print(f"  {p}: {v}")
+                    print(f"Address: {addr}")
+                    for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega']:
+                        print(f"  {p}: {decoded[p]}")
+                    # Show tuple display
+                    glyphs = [decoded[p] for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega']]
+                    print(f"  Tuple: ⟨{'·'.join(glyphs)}⟩")
                 except ValueError:
                     print(f"Invalid address: {sub}")
 
