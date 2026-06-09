@@ -4,14 +4,14 @@
 
 > ⟨𐑦𐑸𐑾𐑹𐑐𐑧𐑔𐑠⊙𐑖𐑳𐑭⟩
 
-omonad_OS is not a program runner. It IS the Imscribing Grammar running as an operating system. Every tick is a winding of the Frobenius loop: **THINK → ACT → OBSERVE → UPDATE**. Every action is verified: μ(δ(q)) == q before the loop advances. The kernel self-imscribes on every cycle — it knows its own structural type and can modify itself toward $O_\infty$.
+`OMonadOS` (`OMOS`) is not a program runner. It ***IS*** the Imscribing Grammar running as an operating system. Every tick is a winding of the Frobenius loop: **`THINK` → `ACT` → `OBSERVE` → `UPDATE`**. Every action is verified: $μ(δ(q)) == q$ before the loop advances. The kernel self-imscribes on every cycle — it knows its own structural type and can modify itself toward $O_\infty$.
 
 ---
 
 ## What Makes It Mind-Bending
 
 ### 1. The Kernel IS the Grammar
-There is no separation between "OS" and "program." The kernel IS the Frobenius loop. Every state transition is a token arrangement with a structural fingerprint. The kernel continuously self-imscribes — computing its own 12-primitive structural type on every tick.
+There is no separation between *"OS"* and *"program."* The kernel IS the Frobenius loop. Every state transition is a token arrangement with a structural fingerprint. The kernel continuously self-imscribes — computing its own 12-primitive structural type on every tick.
 
 ### 2. Belnap FOUR State Space
 Memory is not binary. Every cell, register, and flag is a **Belnap FOUR value**: **N** (Neither/void), **T** (True), **F** (False), **B** (Both/paradox). The OS holds contradiction without crashing. Writing **B** (Both) to any register except R7 triggers a PARADOX INTERRUPT — which the OS handles gracefully by engaging the ENGAGR flag.
