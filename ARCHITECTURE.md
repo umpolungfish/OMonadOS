@@ -211,15 +211,15 @@ A 9-layer structural bridge for hardware abstraction. Programs descend and ascen
 
 | Layer | Name | Tier | D | T | R | P | F | K | G | C | Φ | H | S | Ω |
 |-------|------|------|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 0 | Quarks (Frustrated B5) | O_0 | 𐑛 | 𐑶 | 𐑩 | 𐑯 | 𐑐 | 𐑘 | 𐑚 | 𐑝 | 𐑢 | 𐑓 | 𐑳 | 𐑷 |
-| 1 | Electron Orbital (B4) | O_0 | 𐑛 | 𐑶 | 𐑩 | 𐑗 | 𐑐 | 𐑤 | 𐑚 | 𐑜 | 𐑢 | 𐑓 | 𐑳 | 𐑷 |
-| 2 | Atom | O_1 | 𐑼 | 𐑥 | 𐑽 | 𐑿 | 𐑐 | 𐑤 | 𐑔 | 𐑝 | 𐑮 | 𐑒 | 𐑳 | 𐑷 |
-| 3 | Molecule | O_2 | 𐑼 | 𐑥 | 𐑽 | 𐑿 | 𐑞 | 𐑧 | 𐑲 | 𐑠 | ⊙ | 𐑓 | 𐑳 | 𐑭 |
-| 4 | Cell | O_2 | 𐑦 | 𐑸 | 𐑾 | 𐑬 | 𐑞 | 𐑧 | 𐑲 | 𐑠 | ⊙ | 𐑒 | 𐑳 | 𐑭 |
-| 5 | Mitosis | O_2 | 𐑦 | 𐑸 | 𐑾 | 𐑹 | 𐑱 | 𐑧 | 𐑲 | 𐑠 | ⊙ | 𐑖 | 𐑳 | 𐑭 |
-| 6 | Meiosis | O_2 | 𐑦 | 𐑸 | 𐑽 | 𐑿 | 𐑱 | 𐑧 | 𐑲 | 𐑠 | ⊙ | 𐑖 | 𐑳 | 𐑭 |
-| 7 | Tissue/Organ | O_2 | 𐑦 | 𐑸 | 𐑾 | 𐑬 | 𐑞 | 𐑧 | 𐑲 | 𐑵 | ⊙ | 𐑖 | 𐑳 | 𐑭 |
-| 8 | Whole Organism | O_inf | 𐑦 | 𐑸 | 𐑾 | 𐑹 | 𐑐 | 𐑧 | 𐑲 | 𐑵 | ⊙ | 𐑫 | 𐑳 | 𐑟 |
+| 0 | Quarks (Frustrated B5) | O₀ | 𐑛 | 𐑶 | 𐑩 | 𐑯 | 𐑐 | 𐑘 | 𐑚 | 𐑝 | 𐑢 | 𐑓 | 𐑳 | 𐑷 |
+| 1 | Electron Orbital (B4) | O₀ | 𐑛 | 𐑶 | 𐑩 | 𐑗 | 𐑐 | 𐑤 | 𐑚 | 𐑜 | 𐑢 | 𐑓 | 𐑳 | 𐑷 |
+| 2 | Atom | O₁ | 𐑼 | 𐑥 | 𐑽 | 𐑿 | 𐑐 | 𐑤 | 𐑔 | 𐑝 | 𐑮 | 𐑒 | 𐑳 | 𐑷 |
+| 3 | Molecule | O₂ | 𐑼 | 𐑥 | 𐑽 | 𐑿 | 𐑞 | 𐑧 | 𐑲 | 𐑠 | ⊙ | 𐑓 | 𐑳 | 𐑭 |
+| 4 | Cell | O₂ | 𐑦 | 𐑸 | 𐑾 | 𐑬 | 𐑞 | 𐑧 | 𐑲 | 𐑠 | ⊙ | 𐑒 | 𐑳 | 𐑭 |
+| 5 | Mitosis | O₂ | 𐑦 | 𐑸 | 𐑾 | 𐑹 | 𐑱 | 𐑧 | 𐑲 | 𐑠 | ⊙ | 𐑖 | 𐑳 | 𐑭 |
+| 6 | Meiosis | O₂ | 𐑦 | 𐑸 | 𐑽 | 𐑿 | 𐑱 | 𐑧 | 𐑲 | 𐑠 | ⊙ | 𐑖 | 𐑳 | 𐑭 |
+| 7 | Tissue/Organ | O₂ | 𐑦 | 𐑸 | 𐑾 | 𐑬 | 𐑞 | 𐑧 | 𐑲 | 𐑵 | ⊙ | 𐑖 | 𐑳 | 𐑭 |
+| 8 | Whole Organism | O_∞ | 𐑦 | 𐑸 | 𐑾 | 𐑹 | 𐑐 | 𐑧 | 𐑲 | 𐑵 | ⊙ | 𐑫 | 𐑳 | 𐑟 |
 
 ### 7.2 Key Transitions
 
@@ -244,9 +244,9 @@ On every cycle completion, the kernel attempts to self-modify toward higher ouro
 ### 8.1 Tier Promotion Logic
 
 ```
-O_0 → O_1:  Inject Frobenius pair OR complete Dialetheia
-O_1 → O_2:  Add self-reference + Frobenius + Dialetheia completeness
-O_2 → O_inf: Extend period ≥ 3 with dialetheia, self-ref, Frobenius
+O₀ → O₁:  Inject Frobenius pair OR complete Dialetheia
+O₁ → O₂:  Add self-reference + Frobenius + Dialetheia completeness
+O₂ → O_∞: Extend period ≥ 3 with dialetheia, self-ref, Frobenius
 ```
 
 ### 8.2 Equilibrium Mechanisms
@@ -257,7 +257,7 @@ O_2 → O_inf: Extend period ≥ 3 with dialetheia, self-ref, Frobenius
 
 ### 8.3 Stagnation Escape
 
-If stuck at the same tier for >300 cycles at O_0 or O_1, the kernel navigates the 430M arrangement space for a structurally richer program and loads the best candidate.
+If stuck at the same tier for >300 cycles at O₀ or O₁, the kernel navigates the 430M arrangement space for a structurally richer program and loads the best candidate.
 
 ---
 
@@ -267,18 +267,18 @@ Pre-loaded programs spanning the structural space:
 
 | # | Name | Tier | Arrangement |
 |---|------|------|-------------|
-| I | Dialetheic Bootstrap | O_inf | ISCRIB·EVALT·FSPLIT·EVALF·FFUSE·ENGAGR·IFIX·ISCRIB |
-| II | Void Genesis | O_1 | VINIT·FSPLIT·EVALT·FFUSE·EVALF·CLINK·IFIX·ISCRIB |
-| III | Anchor Protocol | O_0 | TANCH·AFWD·EVALT·AREV·EVALF·CLINK·IFIX·TANCH |
-| IV | Dual Bootstrap | O_1 | ISCRIB·AFWD·FFUSE·FSPLIT·AREV·CLINK·IFIX·ISCRIB |
-| V | Linear Chain | O_0 | IFIX×8 |
-| VI | Empty Bootstrap | O_0 | (VINIT·ISCRIB)×4 |
-| VII | Parakernel | O_1 | ENGAGR·AFWD·FSPLIT·EVALT·FFUSE·EVALF·IFIX·ENGAGR |
-| VIII | Frobenius Kernel | O_1 | (FSPLIT·FFUSE)×2 |
-| IX | Chiral Pairs | O_0 | (AFWD·AREV)×4 |
-| X | Truth Machine | O_0 | ISCRIB·FSPLIT·EVALT·IFIX·ISCRIB·FSPLIT·EVALF·IFIX |
-| XI | Eternal Return | O_0 | TANCH·AFWD·AREV·TANCH·AFWD·AREV·TANCH·AFWD |
-| XII | ROM Burn | O_0 | EVALT·IFIX·EVALF·IFIX·ENGAGR·IFIX·ISCRIB·IFIX |
+| I | Dialetheic Bootstrap | O_∞ | ISCRIB·EVALT·FSPLIT·EVALF·FFUSE·ENGAGR·IFIX·ISCRIB |
+| II | Void Genesis | O₁ | VINIT·FSPLIT·EVALT·FFUSE·EVALF·CLINK·IFIX·ISCRIB |
+| III | Anchor Protocol | O₀ | TANCH·AFWD·EVALT·AREV·EVALF·CLINK·IFIX·TANCH |
+| IV | Dual Bootstrap | O₁ | ISCRIB·AFWD·FFUSE·FSPLIT·AREV·CLINK·IFIX·ISCRIB |
+| V | Linear Chain | O₀ | IFIX×8 |
+| VI | Empty Bootstrap | O₀ | (VINIT·ISCRIB)×4 |
+| VII | Parakernel | O₁ | ENGAGR·AFWD·FSPLIT·EVALT·FFUSE·EVALF·IFIX·ENGAGR |
+| VIII | Frobenius Kernel | O₁ | (FSPLIT·FFUSE)×2 |
+| IX | Chiral Pairs | O₀ | (AFWD·AREV)×4 |
+| X | Truth Machine | O₀ | ISCRIB·FSPLIT·EVALT·IFIX·ISCRIB·FSPLIT·EVALF·IFIX |
+| XI | Eternal Return | O₀ | TANCH·AFWD·AREV·TANCH·AFWD·AREV·TANCH·AFWD |
+| XII | ROM Burn | O₀ | EVALT·IFIX·EVALF·IFIX·ENGAGR·IFIX·ISCRIB·IFIX |
 
 ---
 
@@ -290,12 +290,12 @@ The Organoid Hardware Abstraction Layer treats six organoid augmentations as B4 
 
 | # | Augmentation | Tier | Frobenius | TRL | Ch. | Closable |
 |---|-------------|------|-----------|-----|-----|----------|
-| 1 | Myelin | O_inf | ✓ | 3 | 16 | Yes |
-| 2 | Vasculature | O_inf | ✗ | 3 | 32 | Yes |
-| 3 | Medium | O_2 | ✗ | 4 | 14 | Yes |
-| 4 | Optogenetic | O_inf | ✓ | 5 | 4096 | Yes |
-| 5 | ECM (Chrysalis) | O_0 | ✗ | 4 | 8 | No |
-| 6 | Immune (Guardian) | O_0 | ✗ | 3 | 24 | No |
+| 1 | Myelin | O_∞ | ✓ | 3 | 16 | Yes |
+| 2 | Vasculature | O_∞ | ✗ | 3 | 32 | Yes |
+| 3 | Medium | O₂ | ✗ | 4 | 14 | Yes |
+| 4 | Optogenetic | O_∞ | ✓ | 5 | 4096 | Yes |
+| 5 | ECM (Chrysalis) | O₀ | ✗ | 4 | 8 | No |
+| 6 | Immune (Guardian) | O₀ | ✗ | 3 | 24 | No |
 
 ### 10.2 Closure Gaps
 
@@ -353,7 +353,7 @@ All share the same 12-token IMASM instruction set and Frobenius verification har
 1. ALEPH self-test: verify imscription identity
 2. Crystal filesystem mount (17.28M addresses)
 3. Kernel boot: load bootstrap → self-imscribe → enter THINK
-4. CLINK chain initialize at Whole Organism (layer 8, O_inf)
+4. CLINK chain initialize at Whole Organism (layer 8, O_∞)
 5. Seed crystal FS with bootstrap + 12 canonical programs
 6. Enter REPL
 

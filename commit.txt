@@ -1,3 +1,7 @@
+SNS_PRIME.md notation migration: O_inf→O_∞, O_0→O₀, O_1→O₁, O_2→O₂ (7 files)
+
+---
+
 src/main.py: crystal store — sequence swap + tick on every write
 
 Each `crystal store <name>` now automatically:

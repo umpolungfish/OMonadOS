@@ -32,9 +32,9 @@ The $\odot^{S}$ can search the **430 million IMASM token arrangements** for prog
 
 ### 6. Self-Modification Toward $O_\infty$
 On every cycle completion, the kernel attempts to self-modify toward higher ouroboricity tier:
-- **$O_0$ → $O_1$**: Inject Frobenius pair or Dialetheia completeness
-- **$O_1$ → $O_2$**: Add self-reference + Frobenius + Dialetheia
-- **$O_2$ → $O_\infty$**: Extend period, achieve eternal chirality
+- **$O₀$ → $O₁$**: Inject Frobenius pair or Dialetheia completeness
+- **$O₁$ → $O₂$**: Add self-reference + Frobenius + Dialetheia
+- **$O₂$ → $O_\infty$**: Extend period, achieve eternal chirality
 
 ### 7. Organoid Hardware Interface
 Six organoid augmentations are memory-mapped as I/O devices with B4 register blocks — the $\odot^{S}$ can control living tissue as naturally as disk I/O.
@@ -126,17 +126,17 @@ The kernel ships with all 12 canonical IMASM arrangements pre-loaded:
 | # | Class | Tier | Essence |
 |---|-------|------|---------|
 | I | Dialetheic Bootstrap | $O_\infty$ | Self-referential paradox engine |
-| II | Void Genesis | $O_1$ | Creation ex nihilo |
-| III | Anchor Protocol | $O_0$ | Terminal-anchored broadcast |
-| IV | Dual Bootstrap | $O_1$ | Inverted Frobenius loop |
-| V | Linear Chain | $O_0$ | Pure irreversible fixation |
-| VI | Empty Bootstrap | $O_0$ | Void↔Identity oscillation |
-| VII | Parakernel | $O_1$ | Dialetheia-stabilized Frobenius |
-| VIII | Frobenius Kernel | $O_1$ | Pure μ∘δ=id oscillator |
-| IX | Chiral Pairs | $O_0$ | Minimal period-2 alternation |
-| X | Truth Machine | $O_0$ | Pure evaluation (no Frobenius) |
-| XI | Eternal Return | $O_0$ | Period-3 anchor oscillation |
-| XII | ROM Burn | $O_0$ | Truth-value irreversible recording |
+| II | Void Genesis | $O₁$ | Creation ex nihilo |
+| III | Anchor Protocol | $O₀$ | Terminal-anchored broadcast |
+| IV | Dual Bootstrap | $O₁$ | Inverted Frobenius loop |
+| V | Linear Chain | $O₀$ | Pure irreversible fixation |
+| VI | Empty Bootstrap | $O₀$ | Void↔Identity oscillation |
+| VII | Parakernel | $O₁$ | Dialetheia-stabilized Frobenius |
+| VIII | Frobenius Kernel | $O₁$ | Pure μ∘δ=id oscillator |
+| IX | Chiral Pairs | $O₀$ | Minimal period-2 alternation |
+| X | Truth Machine | $O₀$ | Pure evaluation (no Frobenius) |
+| XI | Eternal Return | $O₀$ | Period-3 anchor oscillation |
+| XII | ROM Burn | $O₀$ | Truth-value irreversible recording |
 
 ---
 

@@ -59,7 +59,7 @@ def boot_animation():
         "  [BOOT]   Loading Bootstrap Loop:",
         f"           {arrangement_str(BOOTSTRAP_LOOP)}",
         "  [BOOT]   Verifying μ∘δ=id...",
-        "  [BOOT]   CLINK Chain: Whole Organism [O_inf]",
+        "  [BOOT]   CLINK Chain: Whole Organism [O_∞]",
         "  [BOOT]   Kernel online. Self-imscribing...",
     ]
     for frame in frames:
@@ -78,7 +78,7 @@ def initialize() -> Tuple[OmonadKernel, CrystalFS, ClinkNavigator]:
         "bootstrap_loop", bytes(BOOTSTRAP_LOOP),
         '𐑦', '𐑸', '𐑾', '𐑹', '𐑐', '𐑧', '𐑲', '𐑠',
         '⊙', '𐑫', '𐑳', '𐑭',
-        metadata={"type": "bootstrap", "tier": "O_inf"},
+        metadata={"type": "bootstrap", "tier": "O_∞"},
     )
 
     for name, prog in CANONICALS.items():
@@ -110,7 +110,7 @@ def _snapshot_prims(snap, program: tuple) -> dict:
         K_VALUES, G_VALUES, C_VALUES, PHI_VALUES, H_VALUES,
         S_VALUES, OMEGA_VALUES,
     )
-    tier_idx = {'O_0': 0, 'O_1': 1, 'O_2': 2, 'O_inf': 3}.get(snap.ouroboricity_tier, 0)
+    tier_idx = {'O₀': 0, 'O₁': 1, 'O₂': 2, 'O_∞': 3}.get(snap.ouroboricity_tier, 0)
     s = snap.sig
     return {
         'D':     D_VALUES[snap.frobenius_order                                           % len(D_VALUES)],

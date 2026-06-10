@@ -14,7 +14,7 @@ Architecture:
 
 The kernel CAN discover new programs by navigating
 the 430M arrangement space and testing candidates against
-structural criteria. It CAN self-modify toward O_inf.
+structural criteria. It CAN self-modify toward O_∞.
 
 Author: Lando⊗⊙perator
 """
@@ -106,22 +106,22 @@ class StructuralSnapshot:
     frobenius_order: int
     dialetheia_complete: bool
     period: int
-    ouroboricity_tier: str  # O_0, O_1, O_2, O_inf
+    ouroboricity_tier: str  # O₀, O₁, O₂, O_∞
     tuple_display: str = ""
 
     def compute_tier(self):
         """Compute ouroboricity tier from structural properties."""
         if self.dialetheia_complete and self.self_referential and self.frobenius_order > 0:
             if self.period >= 3:
-                self.ouroboricity_tier = "O_inf"
+                self.ouroboricity_tier = "O_∞"
             elif self.period == 2:
-                self.ouroboricity_tier = "O_2"
+                self.ouroboricity_tier = "O₂"
             else:
-                self.ouroboricity_tier = "O_1"
+                self.ouroboricity_tier = "O₁"
         elif self.frobenius_order > 0 or self.dialetheia_complete:
-            self.ouroboricity_tier = "O_1"
+            self.ouroboricity_tier = "O₁"
         else:
-            self.ouroboricity_tier = "O_0"
+            self.ouroboricity_tier = "O₀"
         return self.ouroboricity_tier
 
     def summary(self) -> str:
@@ -175,7 +175,7 @@ def self_imscribe(arr: Tuple[int, ...]) -> StructuralSnapshot:
         frobenius_order=frob_order,
         dialetheia_complete=dial_complete,
         period=period,
-        ouroboricity_tier="O_0",
+        ouroboricity_tier="O₀",
     )
     snap.compute_tier()
     return snap
@@ -208,7 +208,7 @@ class OmonadKernel:
         # Self-imscription
         self.snapshot: Optional[StructuralSnapshot] = None
         self.snapshot_history: List[StructuralSnapshot] = []
-        self.current_tier = "O_0"
+        self.current_tier = "O₀"
         self.tier_promotion_count = 0
 
         # Frobenius verification log
@@ -316,9 +316,9 @@ class OmonadKernel:
         self.current_tier = new_tier
         self.tier_promotion_count += 1
         # Track best tier achieved
-        tier_order = {"O_0": 0, "O_1": 1, "O_2": 2, "O_inf": 3}
+        tier_order = {"O₀": 0, "O₁": 1, "O₂": 2, "O_∞": 3}
         if not hasattr(self, '_best_tier_ever'):
-            self._best_tier_ever = "O_0"
+            self._best_tier_ever = "O₀"
         if tier_order.get(new_tier, 0) > tier_order.get(self._best_tier_ever, 0):
             self._best_tier_ever = new_tier
         if self.on_promotion:
@@ -452,9 +452,9 @@ class OmonadKernel:
         The kernel's self-modification logic treats it as invariant.
 
         Promotion paths:
-          O_0 → O_1: add Frobenius pair OR one dialetheia token
-          O_1 → O_2: add self-reference + missing dialetheia + Frobenius
-          O_2 → O_inf: extend period ≥ 3 with dialetheia complete
+          O₀ → O₁: add Frobenius pair OR one dialetheia token
+          O₁ → O₂: add self-reference + missing dialetheia + Frobenius
+          O₂ → O_∞: extend period ≥ 3 with dialetheia complete
 
         Stagnation: if stuck at same tier for too long, navigate
         arrangement space for a structurally richer program.
@@ -471,32 +471,32 @@ class OmonadKernel:
             self._inject_token(Token.VINIT)
             return
 
-        # ── O_inf: structural closure — maintain equilibrium only ──
-        if current.ouroboricity_tier == "O_inf":
-            # No structural modification at O_inf.
+        # ── O_∞: structural closure — maintain equilibrium only ──
+        if current.ouroboricity_tier == "O_∞":
+            # No structural modification at O_∞.
             # Emergency protection above already covers stack bounds.
             return
 
         # ── Stagnation escape ──
         # Track ticks since last tier advancement, not same-tier ticks.
-        # Oscillation O_0↔O_1 must not reset the counter.
+        # Oscillation O₀↔O₁ must not reset the counter.
         if not hasattr(self, '_stagnation_counter'):
             self._stagnation_counter = 0
             self._best_tier_ever = self.current_tier
         if self.current_tier != self._stagnation_tier if hasattr(self, '_stagnation_tier') else True:
             self._stagnation_tier = self.current_tier
         # Only increment if tier hasn't IMPROVED beyond best seen
-        tier_order = {"O_0": 0, "O_1": 1, "O_2": 2, "O_inf": 3}
+        tier_order = {"O₀": 0, "O₁": 1, "O₂": 2, "O_∞": 3}
         if tier_order.get(self.current_tier, 0) > tier_order.get(self._best_tier_ever, 0):
             self._best_tier_ever = self.current_tier
             self._stagnation_counter = 0
         else:
             self._stagnation_counter += 1
 
-        if self._stagnation_counter > 300 and self.current_tier in ("O_0", "O_1"):
+        if self._stagnation_counter > 300 and self.current_tier in ("O₀", "O₁"):
             self._stagnation_counter = 0
-            target = {"O_0": {"frobenius_order": 1, "dialetheia_complete": True},
-                      "O_1": {"frobenius_order": 1, "dialetheia_complete": True,
+            target = {"O₀": {"frobenius_order": 1, "dialetheia_complete": True},
+                      "O₁": {"frobenius_order": 1, "dialetheia_complete": True,
                               "self_referential": True}}
             props = target.get(self.current_tier, {})
             results = self.navigate_arrangement_space(props, max_search=5000)
@@ -547,15 +547,15 @@ class OmonadKernel:
             missing_dial.append(Token.ENGAGR)
 
         # Can we add missing structural features?
-        if current.ouroboricity_tier == "O_0":
-            # O_0 → O_1: need either Frobenius pair or Dialetheia completeness
+        if current.ouroboricity_tier == "O₀":
+            # O₀ → O₁: need either Frobenius pair or Dialetheia completeness
             if missing_dial:
                 self._inject_token(missing_dial[0])
             elif current.frobenius_order == 0:
                 self._inject_token_pair(Token.FSPLIT, Token.FFUSE)
 
-        elif current.ouroboricity_tier == "O_1":
-            # O_1 → O_2: need Frobenius + Dialetheia + self-reference
+        elif current.ouroboricity_tier == "O₁":
+            # O₁ → O₂: need Frobenius + Dialetheia + self-reference
             if not current.self_referential:
                 self._make_self_referential()
             elif missing_dial:
@@ -563,8 +563,8 @@ class OmonadKernel:
             elif current.frobenius_order == 0:
                 self._inject_token_pair(Token.FSPLIT, Token.FFUSE)
 
-        elif current.ouroboricity_tier == "O_2":
-            # O_2 → O_inf: need period ≥ 3, self-ref, dialetheia, frobenius
+        elif current.ouroboricity_tier == "O₂":
+            # O₂ → O_∞: need period ≥ 3, self-ref, dialetheia, frobenius
             if current.period < 3 and current.dialetheia_complete:
                 self._extend_period()
 
@@ -712,7 +712,7 @@ class OmonadKernel:
                     break
 
         # Rank by tier
-        tier_order = {"O_inf": 0, "O_2": 1, "O_1": 2, "O_0": 3}
+        tier_order = {"O_∞": 0, "O₂": 1, "O₁": 2, "O₀": 3}
         results.sort(key=lambda s: tier_order.get(s.ouroboricity_tier, 99))
         self.arrangement_space_samples.extend(results)
         return results

@@ -163,7 +163,7 @@ Omega: 0=𐑷(0) 1=𐑴(Z2) 2=𐑭(Z) 3=𐑟(NA)
 
 | Entry | Address | Tuple |
 |-------|---------|-------|
-| Whole Organism (O_inf) | 6738899 | ⟨𐑦·𐑸·𐑾·𐑹·𐑐·𐑧·𐑲·𐑵·⊙·𐑫·𐑳·𐑟⟩ |
+| Whole Organism (O_∞) | 6738899 | ⟨𐑦·𐑸·𐑾·𐑹·𐑐·𐑧·𐑲·𐑵·⊙·𐑫·𐑳·𐑟⟩ |
 | Bootstrap Loop | 6738848 | ⟨𐑦·𐑸·𐑾·𐑹·𐑐·𐑧·𐑔·𐑠·⊙·𐑖·𐑳·𐑭⟩ |
 
 Delta (IUG → bootstrap): 51. Differing primitives: Γ=𐑲→𐑔, ɢ=𐑵→𐑠, Ħ=𐑫→𐑖, Ω=𐑟→𐑭.
@@ -182,30 +182,30 @@ self_referential: bool             — arr[0] == arr[-1]
 frobenius_order:  int              — 0=none, 1=split→fuse, 2=fuse→split, 3=multiple
 dialetheia_complete: bool          — EVALT, EVALF, ENGAGR all present
 period:           int              — minimal repetition period
-ouroboricity_tier: str             — O_0 / O_1 / O_2 / O_inf
+ouroboricity_tier: str             — O₀ / O₁ / O₂ / O_∞
 ```
 
 ### 6.2 Tier Determination
 
 ```
 if dialetheia_complete AND self_referential AND frobenius_order > 0:
-    if period >= 3:    O_inf
-    elif period == 2:  O_2
-    else:              O_1
+    if period >= 3:    O_∞
+    elif period == 2:  O₂
+    else:              O₁
 elif frobenius_order > 0 OR dialetheia_complete:
-    O_1
+    O₁
 else:
-    O_0
+    O₀
 ```
 
 ### 6.3 Tier Properties
 
 | Tier | Minimum Requirements | Signature |
 |------|---------------------|-----------|
-| O_0 | Any 8-token program | No Frobenius, no dialetheia |
-| O_1 | Frobenius pair OR dialetheia complete | Partial structural closure |
-| O_2 | Self-ref + Frobenius + dialetheia, period ≥ 2 | Near-full closure |
-| O_inf | Self-ref + Frobenius + dialetheia, period ≥ 3 | Full structural closure |
+| O₀ | Any 8-token program | No Frobenius, no dialetheia |
+| O₁ | Frobenius pair OR dialetheia complete | Partial structural closure |
+| O₂ | Self-ref + Frobenius + dialetheia, period ≥ 2 | Near-full closure |
+| O_∞ | Self-ref + Frobenius + dialetheia, period ≥ 3 | Full structural closure |
 
 ---
 
@@ -259,7 +259,7 @@ Searchable properties:
    - Select token pool based on target properties
    - Generate random programs of lengths 4, 6, 8
    - Test up to `max_search` candidates
-3. Rank results by tier (O_inf > O_2 > O_1 > O_0)
+3. Rank results by tier (O_∞ > O₂ > O₁ > O₀)
 
 ### 8.3 Arrangement Space Size
 
@@ -301,24 +301,24 @@ Stored in `kernel.verification_log: List[FrobeniusResult]`. The REPL `frobenius`
 
 ### 10.1 Augmentation Structural Types
 
-**Myelin** (O_inf, ✓closed):
+**Myelin** (O_∞, ✓closed):
 ⟨𐑼·𐑰·𐑾·𐑹·𐑐·𐑤·𐑲·𐑠·⊙·𐑫·𐑳·𐑭⟩
 
-**Vasculature** (O_inf, ✗open):
+**Vasculature** (O_∞, ✗open):
 ⟨𐑦·𐑸·𐑾·𐑹·𐑞·𐑤·𐑲·𐑠·⊙·𐑫·𐑳·𐑭⟩  
 Gap: F:𐑞→𐑐
 
-**Medium** (O_2, ✗open):
+**Medium** (O₂, ✗open):
 ⟨𐑛·𐑰·𐑾·𐑹·𐑱·𐑤·𐑲·𐑝·⊙·𐑫·𐑳·𐑷⟩  
 Gap: D:𐑛→𐑦, Ω:𐑷→𐑭, G:𐑝→𐑠
 
-**Optogenetic** (O_inf, ✓closed):
+**Optogenetic** (O_∞, ✓closed):
 ⟨𐑼·𐑥·𐑾·𐑹·𐑐·𐑤·𐑲·𐑵·⊙·𐑫·𐑳·𐑭⟩
 
-**ECM** (O_0, ✗open, not closable):
+**ECM** (O₀, ✗open, not closable):
 ⟨𐑨·𐑡·𐑾·𐑬·𐑱·𐑧·𐑚·𐑵·𐑢·𐑒·𐑙·𐑷⟩
 
-**Immune** (O_0, ✗open, not closable):
+**Immune** (O₀, ✗open, not closable):
 ⟨𐑨·𐑡·𐑾·𐑬·𐑱·𐑤·𐑲·𐑵·⊙·𐑫·𐑳·𐑴⟩
 
 ### 10.2 Frobenius Core
@@ -462,23 +462,23 @@ Net program delta = sum of per-opcode deltas. Equilibrium target: 0.
 ### 13.3 Tier Promotion Paths
 
 ```
-O_0 → O_1:
+O₀ → O₁:
   - Missing dialetheia tokens: inject EVALT, EVALF, or ENGAGR
   - Missing Frobenius: inject FSPLIT + FFUSE pair
 
-O_1 → O_2:
+O₁ → O₂:
   - Not self-referential: make_self_referential()
   - Missing dialetheia: inject missing token
   - Missing Frobenius: inject FSPLIT + FFUSE pair
 
-O_2 → O_inf:
+O₂ → O_∞:
   - Period < 3 and dialetheia complete: extend_period()
 ```
 
 ### 13.4 Stagnation Detection
 
 - Counter: `_stagnation_counter` increments each cycle without tier improvement
-- Threshold: >300 cycles at O_0 or O_1 triggers arrangement space search
+- Threshold: >300 cycles at O₀ or O₁ triggers arrangement space search
 - Escape: load best candidate program with higher tier
 
 ---
