@@ -1,1 +1,35 @@
-initial
+src/main.py: crystal store — sequence swap + tick on every write
+
+Each `crystal store <name>` now automatically:
+  1. Hashes the name → picks one of 12 canonicals (deterministic)
+  2. Loads that canonical as the kernel program
+  3. Runs one tick to evolve structural state
+  4. Derives the 12-primitive crystal address from the new snapshot
+  5. Stores at that address
+
+Properties:
+  - Same name → same canonical → same address every time
+  - Different names spread across 12 distinct canonical starting points
+  - Address is structural (derived from frobenius_order, period, sig,
+    tier, token_diversity, self_ref, dialetheia, program length)
+  - No hardcoding, no static fallback
+
+REPL output shows which canonical was loaded and the resulting tick count.
+
+---
+
+src/main.py: crystal store derives address from live structural state
+
+- _snapshot_prims(snap, program) maps 12 snapshot properties to Shavian glyphs:
+    D←frobenius_order, T←period, R←sig[0], P←sig[1], F←sig[2], K←sig[3],
+    G←token_diversity, C←(self_ref,dialetheia), Phi←tier, H←len(program),
+    S←sum(sig), Omega←(period+frobenius_order)
+- No fallback; store refuses if no snapshot
+
+---
+
+src/kernel.py: fix run() — count elapsed ticks, not absolute tick_count
+src/main.py: crystal name + crystal <addr> shows stored entry
+src/main.py: fix BOOT_BANNER border alignment
+src/kernel.py: fix status box borders
+pyproject.toml + src/: fix omos entry point and import paths

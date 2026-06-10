@@ -21,8 +21,8 @@ Author: Lando⊗⊙perator
 from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from tokens import Token
-from belnap_state import B4
+from .tokens import Token
+from .belnap_state import B4
 
 
 # ─── Augmentation Registry ────────────────────────────────────

@@ -18,7 +18,7 @@ Author: Lando⊗⊙perator
 
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, field
-from tokens import Token
+from .tokens import Token
 
 
 # ─── The 9 Layers ─────────────────────────────────────────────

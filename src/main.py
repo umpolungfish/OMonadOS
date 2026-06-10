@@ -25,13 +25,13 @@ import readline  # for REPL
 # Add parent to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.tokens import (
+from .tokens import (
     Token, TOKEN_NAMES, BOOTSTRAP_LOOP, CANONICALS, arrangement_str,
 )
-from src.belnap_state import B4, B4Memory, B4Registers, B4Stack
-from src.kernel import OmonadKernel, self_imscribe, KernelPhase
-from src.crystal_fs import CrystalFS, crystal_encode, crystal_decode, TOTAL_TYPES
-from src.clink_chain import ClinkNavigator, CLINK_CHAIN
+from .belnap_state import B4, B4Memory, B4Registers, B4Stack
+from .kernel import OmonadKernel, self_imscribe, KernelPhase
+from .crystal_fs import CrystalFS, crystal_encode, crystal_decode, TOTAL_TYPES
+from .clink_chain import ClinkNavigator, CLINK_CHAIN
 
 
 # ─── Boot Animation ───────────────────────────────────────────
@@ -44,7 +44,7 @@ BOOT_BANNER = r"""
      █▌                                                   ▐█
      █▌  ⟨𐑦·𐑸·𐑾·𐑹·𐑐·𐑧·𐑔·𐑠·⊙·𐑖·𐑳·𐑭⟩                    ▐█
      █▌  Frobenius Core · Belnap FOUR State               ▐█
-     █▌  Crystal FS · CLINK Chain · 430M Arrangement Space  ▐█
+     █▌  Crystal FS · CLINK Chain · 430M Arrangement      ▐█
      █▌                                                   ▐█
      ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 """
@@ -101,6 +101,33 @@ def initialize() -> Tuple[OmonadKernel, CrystalFS, ClinkNavigator]:
     return kernel, cfs, navigator
 
 
+def _snapshot_prims(snap, program: tuple) -> dict:
+    """Derive the 12-primitive crystal tuple from the kernel's structural snapshot.
+    Every dimension maps to a distinct structural property — no hardcoding, no fallback.
+    """
+    from .crystal_fs import (
+        D_VALUES, T_VALUES, R_VALUES, P_VALUES, F_VALUES,
+        K_VALUES, G_VALUES, C_VALUES, PHI_VALUES, H_VALUES,
+        S_VALUES, OMEGA_VALUES,
+    )
+    tier_idx = {'O_0': 0, 'O_1': 1, 'O_2': 2, 'O_inf': 3}.get(snap.ouroboricity_tier, 0)
+    s = snap.sig
+    return {
+        'D':     D_VALUES[snap.frobenius_order                                           % len(D_VALUES)],
+        'T':     T_VALUES[snap.period                                                    % len(T_VALUES)],
+        'R':     R_VALUES[s[0]                                                           % len(R_VALUES)],
+        'P':     P_VALUES[s[1]                                                           % len(P_VALUES)],
+        'F':     F_VALUES[s[2]                                                           % len(F_VALUES)],
+        'K':     K_VALUES[s[3]                                                           % len(K_VALUES)],
+        'G':     G_VALUES[snap.token_diversity                                           % len(G_VALUES)],
+        'C':     C_VALUES[((int(snap.self_referential) << 1) | int(snap.dialetheia_complete)) % len(C_VALUES)],
+        'Phi':   PHI_VALUES[tier_idx                                                     % len(PHI_VALUES)],
+        'H':     H_VALUES[len(program)                                                   % len(H_VALUES)],
+        'S':     S_VALUES[sum(s)                                                         % len(S_VALUES)],
+        'Omega': OMEGA_VALUES[(snap.period + snap.frobenius_order)                       % len(OMEGA_VALUES)],
+    }
+
+
 def print_status(kernel, navigator):
     """Print kernel and navigator status."""
     print(kernel.status())
@@ -119,8 +146,9 @@ omonad_OS ⊙ REPL Commands:
   load <canonical> — Load a canonical program (I-XII or name)
   program          — Show current program as token chain
   snapshot         — Show current structural snapshot
-  crystal <addr>   — Decode a crystal address
+  crystal <addr>   — Decode a crystal address (+ show stored entry if any)
   crystal store <name> <data>  — Store data at crystal address
+  crystal name <name>          — Retrieve stored entry by name
   crystal find <query>         — Navigate crystal (e.g. Phi=⊙)
   clink up|down|goto <N>       — Navigate CLINK chain
   clink status     — Show current CLINK layer
@@ -234,25 +262,26 @@ def repl(kernel: OmonadKernel, cfs: CrystalFS, navigator: ClinkNavigator):
                 continue
             sub = parts[1].lower()
             if sub == "store":
-                # crystal store <name> [<metadata>]
                 name = parts[2] if len(parts) > 2 else ""
                 if not name:
-                    print("Usage: crystal store <name>")
+                    print("Usage: crystal store <name> [<data>]")
                     continue
-                # Use kernel's current snapshot primitives for the address
+                # Sequence swap: hash name → canonical index → load → tick
+                # This ensures each store is accompanied by a structural state change.
+                # Same name → same canonical → same address (deterministic).
+                canonical_keys = list(CANONICALS.keys())
+                canon_idx = int.from_bytes(
+                    __import__('hashlib').sha256(name.encode()).digest()[:2], 'big'
+                ) % len(canonical_keys)
+                kernel.load_canonical(canonical_keys[canon_idx])
+                kernel.tick()
                 snap = kernel.snapshot
-                if snap is None:
-                    print("No snapshot available — run a tick first.")
-                    continue
-                prims = snap.primitive_map if hasattr(snap, 'primitive_map') else {
-                    'D': '𐑦', 'T': '𐑸', 'R': '𐑾', 'P': '𐑹',
-                    'F': '𐑐', 'K': '𐑧', 'G': '𐑲', 'C': '𐑠',
-                    'Phi': '⊙', 'H': '𐑫', 'S': '𐑳', 'Omega': '𐑭',
-                }
+                prims = _snapshot_prims(snap, kernel.program)
                 extra = " ".join(parts[3:]) if len(parts) > 3 else ""
                 addr = cfs.store(name, extra.encode(), **prims,
-                                 metadata={"source": "repl"})
+                                 metadata={"source": "repl", "canonical": canonical_keys[canon_idx]})
                 decoded = crystal_decode(addr)
+                print(f"  ↻ [{canonical_keys[canon_idx]}] → tick {kernel.tick_count}")
                 print(f"Stored '{name}' at address {addr}")
                 print(f"  Tuple: ⟨{'·'.join(decoded[p] for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega'])}⟩")
 
@@ -357,6 +386,23 @@ def repl(kernel: OmonadKernel, cfs: CrystalFS, navigator: ClinkNavigator):
                 print(f"Constraints: {constraints}")
                 print(f"Count: {count:,} / 17,280,000 ({fraction*100:.2f}%)")
 
+            elif sub == "name":
+                name = parts[2] if len(parts) > 2 else ""
+                if not name:
+                    print("Usage: crystal name <name>")
+                else:
+                    entry = cfs.read_by_name(name)
+                    if entry is None:
+                        print(f"No entry named '{name}'.")
+                    else:
+                        print(f"Name:    {entry.name}")
+                        print(f"Address: {entry.address}")
+                        print(f"Tuple:   {entry.tuple_display}")
+                        if entry.data:
+                            print(f"Data:    {entry.data.decode(errors='replace')}")
+                        if entry.metadata:
+                            print(f"Meta:    {entry.metadata}")
+
             else:
                 try:
                     addr = int(sub)
@@ -364,9 +410,16 @@ def repl(kernel: OmonadKernel, cfs: CrystalFS, navigator: ClinkNavigator):
                     print(f"Address: {addr}")
                     for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega']:
                         print(f"  {p}: {decoded[p]}")
-                    # Show tuple display
                     glyphs = [decoded[p] for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega']]
                     print(f"  Tuple: ⟨{'·'.join(glyphs)}⟩")
+                    entry = cfs.read(addr)
+                    if entry is not None:
+                        print(f"  Stored: '{entry.name}'", end="")
+                        if entry.data:
+                            print(f"  →  {entry.data.decode(errors='replace')}", end="")
+                        print()
+                        if entry.metadata:
+                            print(f"  Meta: {entry.metadata}")
                 except ValueError:
                     print(f"Invalid address: {sub}")
 

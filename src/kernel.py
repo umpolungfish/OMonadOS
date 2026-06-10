@@ -25,11 +25,11 @@ from typing import Tuple, List, Dict, Optional, Set, Callable
 from dataclasses import dataclass, field
 from enum import Enum, auto
 
-from src.tokens import (
+from .tokens import (
     Token, Family, TOKEN_FAMILY, TOKEN_NAMES, TOKEN_COUNT,
     BOOTSTRAP_LOOP, CANONICALS, signature, arrangement_str
 )
-from src.belnap_state import (
+from .belnap_state import (
     B4, B4Memory, B4Registers, B4Stack,
     b4_meet, b4_join, b4_complement
 )
@@ -277,9 +277,10 @@ class OmonadKernel:
         return True
 
     def run(self, max_ticks: Optional[int] = None):
-        """Run the kernel loop."""
+        """Run the kernel loop for up to max_ticks additional ticks."""
+        start = self.tick_count
         while self.phase != KernelPhase.HALT:
-            if max_ticks and self.tick_count >= max_ticks:
+            if max_ticks is not None and (self.tick_count - start) >= max_ticks:
                 break
             self.tick()
             self.cycle_count += 1
@@ -759,24 +760,39 @@ class OmonadKernel:
     # ── Status & Display ──────────────────────────────────────
 
     def status(self) -> str:
+        import unicodedata
+        W = 50  # inner display-column width
+
+        def row(content: str) -> str:
+            if len(content) > W:
+                content = content[:W - 1] + "…"
+            return f"║{content:<{W}}║"
+
+        def row2(label: str, lval: str, rlabel: str, rval: str) -> str:
+            left  = f"  {label:<10}{lval:<10}"
+            right = f"  {rlabel:<14}{rval}"
+            return row(left + right)
+
         snap = self.snapshot
+        prog_str = arrangement_str(self.program)
+
         lines = [
-            f"╔══════════════════════════════════════════════════╗",
-            f"║  omonad_OS ⊙ KERNEL STATUS                     ║",
-            f"╠══════════════════════════════════════════════════╣",
-            f"║  Phase:    {self.phase.name:<10}  Tick: {self.tick_count:>8}       ║",
-            f"║  Cycles:   {self.cycle_count:<10}  IP:   {self.ip:>8}       ║",
-            f"║  Tier:     {self.current_tier:<10}  Promotions: {self.tier_promotion_count:>2}    ║",
-            f"║  Program:  {arrangement_str(self.program)[:45]}",
+            f"╔{'═' * W}╗",
+            row("  omonad_OS ⊙ KERNEL STATUS"),
+            f"╠{'═' * W}╣",
+            row2("Phase:",    self.phase.name,          "Tick:",       str(self.tick_count)),
+            row2("Cycles:",   str(self.cycle_count),    "IP:",         str(self.ip)),
+            row2("Tier:",     self.current_tier,        "Promotions:", str(self.tier_promotion_count)),
+            row(f"  Program:  {prog_str}"),
         ]
         if snap:
-            lines.append(f"║  Snapshot: {snap.summary()[:48]}")
+            lines.append(row(f"  Snapshot: {snap.summary()}"))
         lines.extend([
-            f"║  Frobenius: {len(self.verification_log)} checks, {self.open_count} open",
-            f"║  Memory:   {self.memory._cell_count} B4 cells",
-            f"║  Stack:    {self.stack.depth} items",
-            f"║  R0-R7:    {' '.join(self.registers.read(i).name for i in range(8))}",
-            f"╚══════════════════════════════════════════════════╝",
+            row(f"  Frobenius: {len(self.verification_log)} checks, {self.open_count} open"),
+            row(f"  Memory:   {self.memory._cell_count} B4 cells"),
+            row(f"  Stack:    {self.stack.depth} items"),
+            row(f"  R0-R7:    {' '.join(self.registers.read(i).name for i in range(8))}"),
+            f"╚{'═' * W}╝",
         ])
         return "\n".join(lines)
 

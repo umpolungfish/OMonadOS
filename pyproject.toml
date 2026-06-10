@@ -4,10 +4,10 @@ version = "0.1.0"
 description = "The ⊙ Operating System — self-imscribing Frobenius kernel with Belnap FOUR state and Crystal filesystem"
 authors = [{name = "Lando⊗⊙perator"}]
 requires-python = ">=3.10"
-dependencies = ["imasmic_core>=0.5.69"]
+dependencies = []
 
 [project.scripts]
-omos = "omonad_OS.src.main:main"
+omos = "src.main:main"
 
 [build-system]
 requires = ["setuptools>=61.0"]
