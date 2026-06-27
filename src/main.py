@@ -42,7 +42,7 @@ BOOT_BANNER = r"""
      █▌           o m o n a d _ O S   ⊙                  ▐█
      █▌    The Self-Imscribing Operating Kernel           ▐█
      █▌                                                   ▐█
-     █▌  ⟨𐑦·𐑸·𐑾·𐑹·𐑐·𐑧·𐑔·𐑠·⊙·𐑖·𐑳·𐑭⟩                    ▐█
+     █▌  ⟨𐑦𐑸𐑾𐑹𐑐𐑧𐑔𐑠⊙𐑖𐑳𐑭⟩                    ▐█
      █▌  Frobenius Core · Belnap FOUR State               ▐█
      █▌  Crystal FS · CLINK Chain · 430M Arrangement      ▐█
      █▌                                                   ▐█
@@ -283,7 +283,7 @@ def repl(kernel: OmonadKernel, cfs: CrystalFS, navigator: ClinkNavigator):
                 decoded = crystal_decode(addr)
                 print(f"  ↻ [{canonical_keys[canon_idx]}] → tick {kernel.tick_count}")
                 print(f"Stored '{name}' at address {addr}")
-                print(f"  Tuple: ⟨{'·'.join(decoded[p] for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega'])}⟩")
+                print(f"  Tuple: ⟨{''.join(decoded[p] for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega'])}⟩")
 
             elif sub == "find":
                 # crystal find Phi=⊙ S=𐑳 ...
@@ -411,7 +411,7 @@ def repl(kernel: OmonadKernel, cfs: CrystalFS, navigator: ClinkNavigator):
                     for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega']:
                         print(f"  {p}: {decoded[p]}")
                     glyphs = [decoded[p] for p in ['D','T','R','P','F','K','G','C','Phi','H','S','Omega']]
-                    print(f"  Tuple: ⟨{'·'.join(glyphs)}⟩")
+                    print(f"  Tuple: ⟨{''.join(glyphs)}⟩")
                     entry = cfs.read(addr)
                     if entry is not None:
                         print(f"  Stored: '{entry.name}'", end="")

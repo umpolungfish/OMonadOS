@@ -141,7 +141,7 @@ class CrystalFS:
         entry = CrystalEntry(
             address=address,
             tuple_display=(
-                f"⟨{D}·{T}·{R}·{P}·{F}·{K}·{G}·{C}·{Phi}·{H}·{S}·{Omega}⟩"
+                f"⟨{D}{T}{R}{P}{F}{K}{G}{C}{Phi}{H}{S}{Omega}⟩"
             ),
             name=name,
             data=data,

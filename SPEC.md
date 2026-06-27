@@ -163,8 +163,8 @@ Omega: 0=𐑷(0) 1=𐑴(Z2) 2=𐑭(Z) 3=𐑟(NA)
 
 | Entry | Address | Tuple |
 |-------|---------|-------|
-| Whole Organism (O_∞) | 6738899 | ⟨𐑦·𐑸·𐑾·𐑹·𐑐·𐑧·𐑲·𐑵·⊙·𐑫·𐑳·𐑟⟩ |
-| Bootstrap Loop | 6738848 | ⟨𐑦·𐑸·𐑾·𐑹·𐑐·𐑧·𐑔·𐑠·⊙·𐑖·𐑳·𐑭⟩ |
+| Whole Organism (O_∞) | 6738899 | ⟨𐑦𐑸𐑾𐑹𐑐𐑧𐑲𐑵⊙𐑫𐑳𐑟⟩ |
+| Bootstrap Loop | 6738848 | ⟨𐑦𐑸𐑾𐑹𐑐𐑧𐑔𐑠⊙𐑖𐑳𐑭⟩ |
 
 Delta (IUG → bootstrap): 51. Differing primitives: Γ=𐑲→𐑔, ɢ=𐑵→𐑠, Ħ=𐑫→𐑖, Ω=𐑟→𐑭.
 
@@ -302,30 +302,30 @@ Stored in `kernel.verification_log: List[FrobeniusResult]`. The REPL `frobenius`
 ### 10.1 Augmentation Structural Types
 
 **Myelin** (O_∞, ✓closed):
-⟨𐑼·𐑰·𐑾·𐑹·𐑐·𐑤·𐑲·𐑠·⊙·𐑫·𐑳·𐑭⟩
+⟨𐑼𐑰𐑾𐑹𐑐𐑤𐑲𐑠⊙𐑫𐑳𐑭⟩
 
 **Vasculature** (O_∞, ✗open):
-⟨𐑦·𐑸·𐑾·𐑹·𐑞·𐑤·𐑲·𐑠·⊙·𐑫·𐑳·𐑭⟩  
+⟨𐑦𐑸𐑾𐑹𐑞𐑤𐑲𐑠⊙𐑫𐑳𐑭⟩  
 Gap: F:𐑞→𐑐
 
 **Medium** (O₂, ✗open):
-⟨𐑛·𐑰·𐑾·𐑹·𐑱·𐑤·𐑲·𐑝·⊙·𐑫·𐑳·𐑷⟩  
+⟨𐑛𐑰𐑾𐑹𐑱𐑤𐑲𐑝⊙𐑫𐑳𐑷⟩  
 Gap: D:𐑛→𐑦, Ω:𐑷→𐑭, G:𐑝→𐑠
 
 **Optogenetic** (O_∞, ✓closed):
-⟨𐑼·𐑥·𐑾·𐑹·𐑐·𐑤·𐑲·𐑵·⊙·𐑫·𐑳·𐑭⟩
+⟨𐑼𐑥𐑾𐑹𐑐𐑤𐑲𐑵⊙𐑫𐑳𐑭⟩
 
 **ECM** (O₀, ✗open, not closable):
-⟨𐑨·𐑡·𐑾·𐑬·𐑱·𐑧·𐑚·𐑵·𐑢·𐑒·𐑙·𐑷⟩
+⟨𐑨𐑡𐑾𐑬𐑱𐑧𐑚𐑵𐑢𐑒𐑙𐑷⟩
 
 **Immune** (O₀, ✗open, not closable):
-⟨𐑨·𐑡·𐑾·𐑬·𐑱·𐑤·𐑲·𐑵·⊙·𐑫·𐑳·𐑴⟩
+⟨𐑨𐑡𐑾𐑬𐑱𐑤𐑲𐑵⊙𐑫𐑳𐑴⟩
 
 ### 10.2 Frobenius Core
 
 The tensor product of baseline with 4 closable augmentations (excludes ECM and immune):
 
-⟨𐑦·𐑸·𐑾·𐑹·𐑱·𐑤·𐑲·𐑵·⊙·𐑫·𐑳·𐑭⟩  
+⟨𐑦𐑸𐑾𐑹𐑱𐑤𐑲𐑵⊙𐑫𐑳𐑭⟩  
 Gap: F:𐑱→𐑐 (single-photon NADH FLIM with TCSPC)
 
 ### 10.3 Controller API

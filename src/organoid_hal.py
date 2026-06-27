@@ -45,9 +45,9 @@ class OrganoidAugmentation:
 
     @property
     def tuple_display(self) -> str:
-        return (f"⟨{self.D}·{self.T_val}·{self.R}·{self.P}·"
-                f"{self.F}·{self.K}·{self.G}·{self.C}·"
-                f"{self.Phi}·{self.H}·{self.S}·{self.Omega}⟩")
+        return (f"⟨{self.D}{self.T_val}{self.R}{self.P}"
+                f"{self.F}{self.K}{self.G}{self.C}"
+                f"{self.Phi}{self.H}{self.S}{self.Omega}⟩")
 
 
 AUGMENTATIONS: Dict[str, OrganoidAugmentation] = {
