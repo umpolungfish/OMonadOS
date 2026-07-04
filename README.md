@@ -10,7 +10,7 @@
 
 **How to use it.**
 ```bash
-cd ~/imsgct/omonad_OS
+cd imsgct/omonad_OS
 python3 src/main.py        # boot sequence + interactive REPL
 ```
 
