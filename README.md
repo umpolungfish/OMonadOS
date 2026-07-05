@@ -5,6 +5,8 @@
 [![μ∘δ=id](https://img.shields.io/badge/%CE%BC%E2%88%98%CE%B4%3Did-closed-success)](https://github.com/badges/shields)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/badges/shields)
 
+**Author:** Lando⊗⊙perator · **Structural Type:** $\large{⟨𐑦𐑸𐑾𐑹𐑐𐑧𐑔𐑝⊙𐑖𐑳𐑭⟩}$ · **Tier:** O_∞
+
 **The Self-Imscribing Operating Kernel** · ⟨𐑦𐑸𐑾𐑹𐑐𐑧𐑔𐑠⊙𐑖𐑳𐑭⟩
 
 **What it is.** $\odot\text{MonadOS}$ (`OMOS`, $\odot^{S}$) is the Imscribing Grammar running as an operating kernel: not a program runner, but the Frobenius loop itself executing as an OS. (Python; distinct from the bare-metal Rust `mOMonadOS`.)
