@@ -126,7 +126,7 @@ Each B4 cell is 2 bits. Four cells per byte. Cell ordering within a byte:
 
 ```
 address(Ð,Þ,Ř,Φ,ƒ,Ç,Γ,ɢ,φ̂,Ħ,Σ,Ω) = Σ i×S where:
-  Ð_idx ∈ [0,3], stride 5184000
+  D_idx ∈ [0,3], stride 5184000
   Þ_idx ∈ [0,4], stride 1728000
   Ř_idx ∈ [0,3], stride  576000
   Φ_idx ∈ [0,4], stride  144000
